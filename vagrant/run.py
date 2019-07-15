@@ -31,13 +31,37 @@ def newMenuItem(restaurant_id):
         return render_template('newMenuItem.html', restaurant_id =
             restaurant_id)
 
-@app.route('/restaurants/<int:restaurant_id>/edit/')
-def editMenuItem(restaurant_id):
-    return "page to create a new menu item. Task 2 complete."
+@app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/edit/', methods = ['GET', 'POST'])
+def editMenuItem(restaurant_id, menu_id):
+    editedItem = session.query(MenuItem).filter_by(id = menu_id).one()
+    if request.method == 'POST':
+            if request.form['name']:
+			    editedItem.name = request.form['name']
+            if request.form['description']:
+                    editedItem.description = request.form['name']
+            if request.form['price']:
+                    editedItem.price = request.form['price']
+            if request.form['course']:
+                    editedItem.course = request.form['course']
+            session.add(editedItem)
+            session.commit()
+            return redirect(url_for('restaurantMenu', restaurant_id = 
+                restaurant_id))
+    else:
+	    return render_template('editmenuitem.html', restaurant_id = restaurant_id, 
+            menu_id = menu_id, item = editedItem)
 
-@app.route('/restaurants/<int:restaurant_id>/delete/')
-def deleteMenuItem(restaurant_id):
-    return "page to create a new menu item. Task 3 complete."
+@app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/delete/', methods=['GET', 'POST'])
+def deleteMenuItem(restaurant_id, menu_id):
+    itemToDelete = session.query(MenuItem).filter_by(id=menu_id).one()
+    if request.method == 'POST':
+            session.delete(itemToDelete)
+            session.commit()
+            return redirect(url_for('restaurantMenu', restaurant_id = 
+                restaurant_id))
+    else:
+            return render_template('deleteMenuItem.html', restaurant_id = restaurant_id, 
+            menu_id = menu_id, item = itemToDelete)    
 
 if __name__ == '__main__':
     app.debug = True

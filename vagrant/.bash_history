@@ -7,3 +7,5 @@ pwd
 pwd
 cd ..
 python
+vagrant up
+vagrant ssh
