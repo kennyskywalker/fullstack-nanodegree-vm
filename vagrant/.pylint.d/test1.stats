@@ -10,7 +10,7 @@ p3
 I0
 sS'statement'
 p4
-I47
+I20
 sS'global_note'
 p5
 F10.0
@@ -41,7 +41,7 @@ c__builtin__
 set
 p17
 ((lp18
-S'run'
+S'test'
 p19
 atp20
 Rp21

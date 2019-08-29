@@ -1,0 +1,13 @@
+<header>
+    <nav>
+               
+        </br>
+        
+        <ul class="nav nav-pills">
+            <dl><dt> class="nav-item"><a href='{{url_for('categories', categories_id=categories.id)}}'> {{categories.name}}</a></dt>
+        </br>
+            <dd>class="nav-item"><a href='{{url_for('latest_items', categories_id=categories.id)}}'> {{latest_items.name}}</a></dd>
+        </ul>
+    </nav>
+    <hr style="clear:both">
+</header>

@@ -1,23 +1,34 @@
-from flask import Flask, url_for
-from flask import redirect
-from sqlalchemy.orm import sessionmaker
+#!/usr/bin/env python
+from flask import Flask, render_template, request, url_for
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 from database_creation import Base, Categories, LatestItems
-from flask import Flask, render_template
 
 app = Flask(__name__)
-
 engine = create_engine('sqlite:///catalogApp.db')
+Base.metadata.bind=engine
 
-sessionDB = sessionmaker()
-sessionDB.configure(bind=engine)
-Base.metadata.create_all(engine)
-session = sessionDB()
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
 
 @app.route('/')
-@app.route('/categories/<int:categories_id>/')
-def index(categories_id):
-    categories = session.query(Categories).all(categories_id)
-    items = session.query(LatestItems).filter_by(categories_id=categories.id)
-    return render_template('index.html', categories=categories, items=items)
+@app.route('/categories')
+def categories():
+    categories = session.query(Categories).all()
+    latest_items = session.query(LatestItems).all()
+    return render_template('categories.html', categories=categories, latest_items=latest_items, login=False)
 
+@app.route('/latest_items')
+def latest_items():
+    latest_items = session.query(LatestItems).all()
+    return render_template('latest_items.html', latest_items=latest_items, login=True)    
+
+
+@app.route('/login')
+def login():
+    return render_template('login.html', login=False)
+
+if __name__ == '__main__':
+    app.secret_key =  'super_secret_key'   
+    app.debug = True
+    app.run(host='0.0.0.0', port=5000)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Restaurant, MenuItem
@@ -11,7 +11,7 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
-
+@app.route('/')
 @app.route('/restaurants/<int:restaurant_id>/')
 def restaurantMenu(restaurant_id):
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
@@ -25,6 +25,7 @@ def newMenuItem(restaurant_id):
             restaurant_id)
         session.add(newItem)
         session.commit()
+        flash("new menu item created!")
         return redirect(url_for('restaurantMenu', restaurant_id = 
             restaurant_id))
     else:
@@ -64,5 +65,6 @@ def deleteMenuItem(restaurant_id, menu_id):
             menu_id = menu_id, item = itemToDelete)    
 
 if __name__ == '__main__':
+    app.secret_key =  'super_secret_key'   
     app.debug = True
     app.run(host='0.0.0.0', port=5000)

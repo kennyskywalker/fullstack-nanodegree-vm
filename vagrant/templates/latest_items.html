@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block view %}
+<html>
+    <body>
+     <h1>{{latest_items.name}}</h1>
+       
+    </br>
+     {% for l in latest_items %}
+        
+    <a href="{{url_for('latest_items', categories) }}">{{l.name}}</a>      
+    </br>
+
+     {% endfor %}
+    </body>
+
+</html>
+{% endblock %}

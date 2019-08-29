@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="split left">
+    <div class="center">
+    <h1>Catalog Items</h1>
+
+    <h1>{{categories.name}}</h1>
+       
+        </br>
+         {% for c in categories %}
+            
+         <a href="{{url_for('categories', categories_id=categories.id)}}"> <h3>{{c.name}}</h3></a>   
+            
+        </br>
+        {% endfor %}
+    </div>
+</div>
+
+
+<h1>{{latest_items.name}}</h1>
+       
+</br>
+ {% for l in latest_items %}
+    
+<a href="{{url_for('latest_items', categories_id=categories.id) }}">{{l.name}}</a>      
+</br>
+
+ {% endfor %}
+          
+    
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+            {% if login %}
+            <h3>What category would you like to see?</h3>
+            {% else %}
+            <p>Already registered? <a href="{{url_for('login') }}">Login</a></p>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+        {% endblock %}
+
+
+
+
+
+
